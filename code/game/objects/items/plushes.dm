@@ -900,15 +900,15 @@
 	var/has_fried = FALSE
 	// Decide if we allow unlimited rice frying or not.
 	var/golden = FALSE
-	// Whether it has shrimp fried a man yet
+	// Whether it has shrimp fried a man yet.
 	var/suishrimp = FALSE
 
 /obj/item/toy/plush/shrimp/examine(mob/user)
 	. = ..()
+	if(suishrimp)
+		. += span_notice("[p_They()] are ready.")
 	if(has_fried)
 		. += span_notice("[p_Theyre()] all tuckered out.")
-	if(suishrimp)
-		. += span_notice("[p_Theyre()] ready.")
 	else
 		. += span_notice("[p_Theyre()] ready to fry some rice.")
 
@@ -927,7 +927,7 @@
 	new_rice.food_buffs = /datum/status_effect/food/speech/shrimp_speech
 	new_rice.AddComponent(/datum/component/shrimp_fried)
 	new_rice.name = "bloody shrimp fried rice"
-	new_rice.desc = "A classic Japanese comfort food, made with sausage, veggies, worchestershire sauce, rice- oh, and of course, the blood of [user]."
+	new_rice.desc = "You're telling me a shrimp fried [user]?"
 	new /obj/effect/temp_visual/shrimp_frying_rice(get_turf(user))
 	user.dust(just_ash = FALSE, drop_items = TRUE)
 
