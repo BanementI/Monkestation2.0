@@ -245,6 +245,7 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 			/obj/item/reagent_containers/cup/bottle/multiver = 1,
 			/obj/item/reagent_containers/medipen = 1,
 			/obj/item/reagent_containers/syringe/convermol = 1,
+			/obj/item/reagent_containers/blacktar = 1
 			) = 1,
 		list(//drinks
 			/obj/item/reagent_containers/cup/glass/bottle/vodka = 1,

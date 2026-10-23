@@ -11,6 +11,9 @@
 	min_wizard_trigger_potency = 4
 	max_wizard_trigger_potency = 100
 
+/datum/round_event/wizard/robelesscasting
+	fakeable = FALSE
+
 /datum/round_event/wizard/robelesscasting/start()
 
 	// Hey, if a corgi has magic missle, he should get the same benefit as anyone
