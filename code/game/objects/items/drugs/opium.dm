@@ -114,8 +114,8 @@
 		to_chat(affected_mob, span_notice("[high_message]"))
 	affected_mob.add_mood_event("smacked out", /datum/mood_event/narcotic_heavy, name)
 	var/need_mob_update
-	need_mob_update += affected_mob.adjust_brute_loss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE) //can be used as a (shitty) painkiller
-	need_mob_update += affected_mob.adjust_fire_loss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE)
+	need_mob_update += affected_mob.adjustBruteLoss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE) //can be used as a (shitty) painkiller
+	need_mob_update += affected_mob.adjustFireLoss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE)
 	if(need_mob_update)
 		//. = UPDATE_MOB_HEALTH
 		// . = TRUE
@@ -124,8 +124,8 @@
 	return ..() || .
 
 /datum/reagent/drug/opium/overdose_process(mob/living/affected_mob, seconds_per_tick, metabolization_ratio)
-	affected_mob.adjust_organ_loss(ORGAN_SLOT_BRAIN, 0.5 * seconds_per_tick * metabolization_ratio, required_organ_flag = affected_organ_flags)
-	affected_mob.adjust_tox_loss(1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE, required_biotype = affected_biotype)
+	affected_mob.adjustOrganLoss(ORGAN_SLOT_BRAIN, 0.5 * seconds_per_tick * metabolization_ratio, required_organ_flag = affected_organ_flags)
+	affected_mob.adjustToxLoss(1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE, required_biotype = affected_biotype)
 	affected_mob.adjust_drowsiness(1 SECONDS * normalise_creation_purity() * seconds_per_tick * metabolization_ratio)
 	return TRUE
 
@@ -153,8 +153,8 @@
 	var/high_message = pick("You feel like nothing can stop you.", "You feel like God.")
 	if(SPT_PROB(2.5, seconds_per_tick))
 		to_chat(affected_mob, span_notice("[high_message]"))
-	var/need_mob_update = affected_mob.adjust_brute_loss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE) //more powerful as a painkiller, possibly actually useful to medical now
-	need_mob_update += affected_mob.adjust_fire_loss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE)
+	var/need_mob_update = affected_mob.adjustBruteLoss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE) //more powerful as a painkiller, possibly actually useful to medical now
+	need_mob_update += affected_mob.adjustFireLoss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE)
 	if(need_mob_update)
 		// return UPDATE_MOB_HEALTH
 		affected_mob.updatehealth() // throwin shit at a wall
@@ -175,7 +175,7 @@
 		to_chat(affected_mob, span_notice("[high_message]"))
 
 	affected_mob.set_drugginess(20 SECONDS * seconds_per_tick * metabolization_ratio)
-	if(affected_mob.adjust_tox_loss(0.5 * seconds_per_tick * metabolization_ratio, updating_health = FALSE, required_biotype = affected_biotype))
+	if(affected_mob.adjustToxLoss(0.5 * seconds_per_tick * metabolization_ratio, updating_health = FALSE, required_biotype = affected_biotype))
 		// return UPDATE_MOB_HEALTH
 		affected_mob.updatehealth() // throwin shit at a wall
 

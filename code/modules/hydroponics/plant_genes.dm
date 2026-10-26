@@ -1109,3 +1109,22 @@
 
 	DISABLE_BITFIELD(our_plant.reagents.flags, NO_REACT)
 	our_plant.reagents.handle_reactions()
+
+/**
+ * on_plant_in_tray is called when a seed with this trait is placed in a hydroponics tray
+ *
+ * * tray - the hydroponics tray the seed is placed in
+ * * seed - the seed being placed in the tray
+ */
+/datum/plant_gene/trait/proc/on_plant_in_tray(obj/machinery/growing/tray, obj/item/seeds/seed)
+	return
+
+/**
+ * on_unplanted_from_tray is called when a seed with this trait is removed from a hydroponics tray
+ * (this can be done from being harvested, being uprooted, etc.)
+ *
+ * * tray - the hydroponics tray the seed is removed from
+ * * seed - the seed being removed from the tray
+ */
+/datum/plant_gene/trait/proc/on_unplanted_from_tray(obj/machinery/growing/tray, obj/item/seeds/seed)
+	return
