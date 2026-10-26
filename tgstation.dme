@@ -2658,6 +2658,7 @@
 #include "code\game\objects\items\drugs\cocaine_chem.dm"
 #include "code\game\objects\items\drugs\cocaine_item.dm"
 #include "code\game\objects\items\drugs\crack_pipe.dm"
+#include "code\game\objects\items\drugs\opium.dm"
 #include "code\game\objects\items\effects\_effects.dm"
 #include "code\game\objects\items\effects\amogus.dm"
 #include "code\game\objects\items\effects\honk_platinum.dm"

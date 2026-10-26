@@ -14,7 +14,7 @@
 	growing_icon = 'icons/obj/service/hydroponics/growing_flowers.dmi'
 	icon_grow = "poppy-grow"
 	icon_dead = "poppy-dead"
-	genes = list(/datum/plant_gene/trait/preserved)
+	genes = list(/datum/plant_gene/trait/preserved, /datum/plant_gene/trait/opium_production)
 	possible_mutations = list(/datum/hydroponics/plant_mutation/geranium, /datum/hydroponics/plant_mutation/lily, /datum/hydroponics/plant_mutation/fleshmass)
 	reagents_add = list(/datum/reagent/medicine/c2/libital = 0.2, /datum/reagent/consumable/nutriment = 0.05)
 

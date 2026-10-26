@@ -13,7 +13,7 @@
 	is_cold_recipe = TRUE
 	required_reagents = list(/datum/reagent/drug/opium/heroin = 8)
 	required_temp = 250 //freeze it
-	reaction_flags = REACTION_INSTANT
+	// reaction_flags = REACTION_INSTANT
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
 	mix_message = "The solution freezes into a powder!"
 
@@ -25,7 +25,7 @@
 /obj/item/reagent_containers/heroin
 	name = "heroin"
 	desc = "Take a line and take some time off, man."
-	icon = 'modular_nova/modules/morenarcotics/icons/crack.dmi'
+	icon = 'icons/obj/items/drugs.dmi'
 	icon_state = "heroin"
 	volume = 4
 	has_variable_transfer_amount = FALSE
@@ -42,8 +42,8 @@
 	if(covered)
 		to_chat(user, span_warning("You have to remove your [covered] first!"))
 		return
-	var/obj/item/organ/lungs/lungs = user.get_organ_slot(ORGAN_SLOT_LUNGS)
-	if(isnull(lungs) || istype(lungs, /obj/item/organ/lungs/synth))
+	var/obj/item/organ/internal/lungs/lungs= user.get_organ_slot(ORGAN_SLOT_LUNGS)
+	if(isnull(lungs) || istype(lungs, /obj/item/organ/internal/lungs/synth))
 		to_chat(user, span_warning("You have to be able to breathe to snort the heroin!"))
 		return
 	user.visible_message(span_notice("'[user] starts snorting the [src]."))
@@ -73,7 +73,7 @@
 /obj/item/reagent_containers/heroinbrick
 	name = "heroin brick"
 	desc = "A brick of heroin. Good for transport!"
-	icon = 'modular_nova/modules/morenarcotics/icons/crack.dmi'
+	icon = 'icons/obj/items/drugs.dmi'
 	icon_state = "heroinbrick"
 	volume = 20
 	has_variable_transfer_amount = FALSE
@@ -117,7 +117,9 @@
 	need_mob_update += affected_mob.adjust_brute_loss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE) //can be used as a (shitty) painkiller
 	need_mob_update += affected_mob.adjust_fire_loss(-0.1 * seconds_per_tick * metabolization_ratio, updating_health = FALSE)
 	if(need_mob_update)
-		. = UPDATE_MOB_HEALTH
+		//. = UPDATE_MOB_HEALTH
+		// . = TRUE
+		affected_mob.updatehealth() // throwin shit at a wall
 	affected_mob.overlay_fullscreen("heroin_euphoria", /atom/movable/screen/fullscreen/color_vision/heroin_color)
 	return ..() || .
 
@@ -154,7 +156,8 @@
 	var/need_mob_update = affected_mob.adjust_brute_loss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE) //more powerful as a painkiller, possibly actually useful to medical now
 	need_mob_update += affected_mob.adjust_fire_loss(-0.4 * seconds_per_tick * metabolization_ratio, , updating_health = FALSE)
 	if(need_mob_update)
-		return UPDATE_MOB_HEALTH
+		// return UPDATE_MOB_HEALTH
+		affected_mob.updatehealth() // throwin shit at a wall
 
 /datum/reagent/drug/opium/blacktar
 	name = "black tar heroin"
@@ -173,7 +176,8 @@
 
 	affected_mob.set_drugginess(20 SECONDS * seconds_per_tick * metabolization_ratio)
 	if(affected_mob.adjust_tox_loss(0.5 * seconds_per_tick * metabolization_ratio, updating_health = FALSE, required_biotype = affected_biotype))
-		return UPDATE_MOB_HEALTH
+		// return UPDATE_MOB_HEALTH
+		affected_mob.updatehealth() // throwin shit at a wall
 
 /datum/reagent/drug/opium/blacktar/liquid //prevents self-duplication by going one step down when mixed
 	name = "liquid black tar heroin"
@@ -181,7 +185,7 @@
 /datum/chemical_reaction/blacktar
 	required_reagents = list(/datum/reagent/drug/opium/blacktar/liquid = 5)
 	required_temp = 480
-	reaction_flags = REACTION_INSTANT
+	// reaction_flags = REACTION_INSTANT
 	reaction_tags = REACTION_TAG_EASY | REACTION_TAG_CHEMICAL
 
 /datum/chemical_reaction/blacktar/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
@@ -196,13 +200,13 @@
 	icon_state = "opium1"
 	tastes = list("amber", "a bitter vanilla")
 	food_reagents = list(
-		/datum/reagent/medicine/morphine = 10,
+		/datum/reagent/medicine/painkiller/morphine = 10,
 		/datum/reagent/consumable/sugar = 1
 	)
 
 /obj/item/food/drug/opium/examine()
 	. = ..()
-	if(reagents.get_reagent_amount(/datum/reagent/medicine/morphine) >= 10)
+	if(reagents.get_reagent_amount(/datum/reagent/medicine/painkiller/morphine) >= 10)
 		. += span_notice("The opium is large and rich in fragrance; it needs no further refinement.")
 	else
 		. += span_notice("The opium is still small, and can be pressed together with more to increase its potency and richness.")
@@ -216,14 +220,14 @@
 	. = ..()
 	reagents.clear_reagents()
 	var/mult = max(potency / 20, 1) // 20 = base, 100 = 5x, 200 = 10x
-	reagents.add_reagent(/datum/reagent/medicine/morphine, (rand(4, 25) / 10) * mult)
+	reagents.add_reagent(/datum/reagent/medicine/painkiller/morphine, (rand(4, 25) / 10) * mult)
 	reagents.add_reagent(/datum/reagent/consumable/sugar, rand(1, 7) / 10)
 
 /obj/item/food/drug/opium/raw/interact_with_atom(obj/item/I, mob/user) // allows for combining opium up to 10u, refining it until rich and fragrant.
 	if(istype(I, /obj/item/food/drug/opium/raw))
 		var/obj/item/food/drug/opium/raw/other = I
 
-		var/current = reagents.get_reagent_amount(/datum/reagent/medicine/morphine)
+		var/current = reagents.get_reagent_amount(/datum/reagent/medicine/painkiller/morphine)
 		if(current >= 10)
 			to_chat(user, span_notice("This chunk can't hold any more."))
 			return TRUE
@@ -232,7 +236,7 @@
 		var/transferred = other.reagents.trans_to(src, capacity_left)
 
 		if(transferred > 0)
-			var/overflow = reagents.get_reagent_amount(/datum/reagent/medicine/morphine) - 10
+			var/overflow = reagents.get_reagent_amount(/datum/reagent/medicine/painkiller/morphine) - 10
 			if(overflow > 0)
 				reagents.trans_to(other, overflow)
 
@@ -245,3 +249,12 @@
 		return TRUE
 
 	return ..()
+
+/obj/item/reagent_containers/blacktar
+	name = "black tar heroin"
+	desc = "A rock of black tar heroin, an impure, freebase form of heroin."
+	icon = 'icons/obj/items/drugs.dmi'
+	icon_state = "blacktar"
+	volume = 5
+	has_variable_transfer_amount = FALSE
+	list_reagents = list(/datum/reagent/drug/opium/blacktar = 5)
